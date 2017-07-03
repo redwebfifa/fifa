@@ -1,0 +1,165 @@
+/******************************************
+PLAYER
+******************************************/
+.player {
+    .section {
+        margin-bottom: rem-calc(30);
+        padding: rem-calc(10 20);
+        background-color: $light-grey;
+    }
+    .heading-page {
+        overflow: hidden;
+        color: $black;
+
+        .emoji {
+            height: rem-calc(100);
+            float: left;
+            margin-right: rem-calc(20);
+        }
+    }
+    .emoji,
+    .badge {
+        width: auto;
+    }
+    .badge {
+        height: rem-calc(30);
+    }
+    .heading-info {
+        float: left;
+        margin-top: rem-calc(16);
+    }
+    .heading-panel {
+        font-size: rem-calc(20);
+    }
+    .current-team {
+        display: block;
+        font-size: rem-calc(24);
+        font-weight: 700;
+    }
+    .career-highlights {
+        width: 100%;
+        margin-bottom: rem-calc(30);
+        border: 1px solid $light-grey;
+        border-top: 3px solid $primary-colour;
+
+        th,
+        td {
+            border: 0;
+        }
+        th {
+            padding: rem-calc(10 10 5);
+            font-size: rem-calc(14);
+
+            & + th {
+                border-left: 1px solid $light-grey;
+            }
+        }
+        td {
+            padding: rem-calc(5 10 10);
+            font-size: rem-calc(28);
+
+            & + td {
+                border-left: 1px solid $light-grey;
+            }
+        }
+    }
+    .results {
+        .match {
+            width: 100%;
+            float: none;
+            padding: rem-calc(10);
+
+            & + .match {
+                margin-top: rem-calc(10);
+            }
+        }
+        .match__date {
+            font-size: rem-calc(13);
+        }
+        .emoji {
+            height: rem-calc(30);
+        }
+    }
+    .results--full {
+        .match {
+            > * {
+                display: inline-block;
+                vertical-align: top;
+            }
+            .match__date {
+                display: block;
+            }
+        }
+        .score,
+        .hyphen {
+            font-size: rem-calc(22);
+        }
+        .score {
+            position: relative;
+            top: rem-calc(6);
+            width: rem-calc(20);
+            margin: 0;
+        }
+        .hyphen {
+            position: relative;
+            top: rem-calc(6);
+            width: rem-calc(6);
+        }
+        .emoji-wrap {
+            position: relative;
+            top: rem-calc(10);
+            width: rem-calc(45);
+            text-align: center;
+        }
+        .team-info {
+            position: relative;
+            top: rem-calc(10);
+            width: rem-calc(300);
+
+            &--home {
+                text-align: right;
+            }
+            &--away {
+                text-align: left;
+            }
+            &__name {
+                display: block;
+                font-size: rem-calc(16);
+            }
+            &__club {
+                font-size: rem-calc(14);
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 880px) {
+    .player .results--full .match {
+        .team-info {
+            display: none;
+        }
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .player {
+        .career-highlights {
+            th,
+            td {
+                padding: rem-calc(10 5 5);
+            }
+            th {
+                font-size: rem-calc(12);
+            }
+            td {
+                font-size: rem-calc(24);
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .posHist {
+        display: none;
+    }
+}

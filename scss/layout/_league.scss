@@ -1,0 +1,276 @@
+/******************************************
+LEAGUE
+******************************************/
+.back-button {
+    display: inline-block;
+    margin-bottom: rem-calc(30);
+    font-size: rem-calc(16);
+    font-weight: bold;
+}
+.loading {
+    color: $light-grey;
+    margin: 100px auto;
+    font-size: 26px;
+    text-align: center;
+}
+.prem tr:nth-child(15) td,
+.prem tr:nth-child(17) td,
+.champ tr:nth-child(3) td,
+.champ tr:nth-child(5) td {
+    background-color: #fff8d0;
+}
+.league tr:nth-last-child(2) td {
+    background-color: #fdc8c8;
+}
+.league tr:first-child td {
+    background-color: #bae4b5;
+}
+.league {
+    width: 100%;
+
+    thead {
+        font-size: rem-calc(12);
+        font-weight: bold;
+        color: $grey;
+    }
+    tbody {
+        font-size: rem-calc(14);
+    }
+    th,
+    td {
+        display: table-cell;
+        padding: rem-calc(7 10);
+
+        &.cell__playerInfo {
+            min-width: rem-calc(120);
+
+            a {
+                color: $black;
+            }
+        }
+        &.cell__trigger {
+            position: relative;
+            min-width: rem-calc(30);
+            cursor: pointer;
+
+            a {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                padding-top: rem-calc(8);
+
+                &:hover {
+                    background-color: lighten($primary-colour, 5);
+                    color: $white;
+                }
+                i {
+                    transition: transform ease .5s;
+                }
+            }
+        }
+    }
+    th.u-clickable:hover {
+        color: $primary-colour;
+    }
+    th.th-position i {
+        position: relative;
+        top: rem-calc(3);
+    }
+    th.th-projected i {
+        position: relative;
+        top: rem-calc(-2);
+    }
+    tr {
+        & + tr {
+            border-top: 1px solid $light-grey;
+        }
+
+        &:hover td,
+        &.expandable td {
+            background-color: lighten($grey, 40);
+        }
+        &.active {
+            td {
+                background-color: $secondary-colour;
+                color: $white;
+            }
+            a {
+               color: $white;
+           }
+            td.cell__trigger{
+                background-color: $secondary-colour;
+
+                i {
+                    transform: rotate(180deg);
+                }
+            }
+        }
+        &.expandable {
+            & + tr {
+                border-top: 0;
+            }
+            td {
+                padding: 0;
+            }
+            .player-info-wrapper {
+                max-height: 0;
+                overflow: hidden;
+                transition: max-height .5s ease;
+            }
+        }
+        &.expanded {
+            & + tr {
+                border-top: 1px solid $light-grey;
+            }
+            td {
+                padding: rem-calc(17 20);
+            }
+            .player-info-wrapper {
+                max-height: rem-calc(500);
+            }
+        }
+    }
+    .emoji,
+    .badge {
+        height: rem-calc(24);
+        width: auto;
+    }
+    .teamName {
+        display: inline-block;
+    }
+    .u-hide-mobile {
+        display: inline-block;
+    }
+    .u-show-mobile {
+        display: none;
+    }
+    .form {
+        display: inline-block;
+        width: rem-calc(14);
+        height: rem-calc(14);
+        border-radius: 50%;
+
+        & + .form {
+            margin-left: rem-calc(2);
+        }
+    }
+    .full-form {
+        width: 100%;
+    }
+}
+.panel {
+    padding: rem-calc(7);
+    background: $white;
+    overflow: hidden;
+
+    .heading-panel {
+        margin: rem-calc(0 20 0 0);
+    }
+    .form-wrap {
+        padding: rem-calc(6);
+    }
+    .form {
+        position: relative;
+        top: rem-calc(2);
+
+        & + .form {
+            margin-left: rem-calc(3);
+        }
+    }
+}
+.results {
+    margin-bottom: rem-calc(10);
+    overflow: hidden;
+}
+.match {
+    width: 32%;
+    float: right;
+    margin-bottom: rem-calc(10);
+
+    > * {
+        display: inline;
+    }
+    & + .match {
+        margin-right: 2%;
+    }
+    .score,
+    .hyphen {
+        position: relative;
+        font-size: rem-calc(18);
+        font-weight: bold;
+    }
+    .score {
+        top: rem-calc(2);
+        margin: rem-calc(0 8);
+    }
+    .hyphen {
+        top: rem-calc(2);
+    }
+    &__date {
+        display: block;
+        margin: rem-calc(5 0 0);
+    }
+}
+
+@media only screen and (max-width: 750px) {
+    .league {
+        .cell__form {
+            display: none;
+        }
+    }
+}
+
+@media only screen and (max-width: 650px) {
+    .league {
+        th,
+        td {
+            &:not(.priority),
+            .teamName {
+                display: none;
+            }
+            &.cell__playerInfo {
+                min-width: 0;
+            }
+        }
+        .u-hide-mobile {
+            display: none;
+        }
+        .u-show-mobile {
+            display: inline-block;
+        }
+    }
+}
+
+@media only screen and (max-width: 500px) {
+    .league {
+        .match {
+            width: 100%;
+
+            & + .match {
+                margin-left: 0;
+            }
+        }
+        .form {
+            width: rem-calc(10);
+            height: rem-calc(10);
+        }
+    }
+}
+
+@media only screen and (max-width: 450px) {
+    .league {
+        td {
+            &.cell__trigger {
+                min-width: rem-calc(20);
+            }
+        }
+        .emoji {
+            height: rem-calc(20);
+        }
+        .badge {
+            display: none;
+        }
+    }
+}

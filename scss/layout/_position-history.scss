@@ -1,0 +1,32 @@
+/******************************************
+POSITION HISTORY
+******************************************/
+.position-history {
+    padding: rem-calc(20);
+    background-color: $white;
+
+    canvas {
+        max-width: 100%;
+    }
+
+    [class^=".ct-chart"] {
+        display: none;
+    }
+    // .ct-labels .ct-horizontal {
+    //     position: relative;
+    //     top: rem-calc(30);
+    //     left: rem-calc(-40);
+    //     transform: rotate(90deg);
+    // }
+    // .ct-grid:nth-child(2n) {
+    //     stroke: white;
+    // }
+    // .ct-line {
+    //     stroke: $light-grey;
+    //     stroke-width: rem-calc(2);
+    // }
+    // .ct-point {
+    //     stroke-width: rem-calc(10);
+    //     border: 2px solid $white;
+    // }
+}

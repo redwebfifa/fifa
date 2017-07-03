@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>The Redweb FIFA League</title>
+        <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:400,400i,700,700i" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+        <link rel="stylesheet" href="css/main.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#e73c3c">
+    </head>
+    <body>
+        <script type="x-template" id="tables">
+            <div class="wrapper">
+                <p v-if="!$root.players.length" class="loading">
+                    <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>
+                </p>
+                <table class="league u-center-align" v-bind:class="{ 'prem': $root.selectedLeague == 'p', 'champ': $root.selectedLeague == 'c' }" v-if="$root.players.length">
+                    <thead>
+                        <tr>
+                            <th class="priority"></th>
+                            <th class="priority">Pos</th>
+                            <th class="u-left-align priority cell__playerInfo">Player</th>
+                            <th class="priority">
+                                <span class="u-hide-mobile">Played</span>
+                                <span class="u-show-mobile">P</span>
+                            </th>
+                            <th class="priority">
+                                <span class="u-hide-mobile">Won</span>
+                                <span class="u-show-mobile">W</span>
+                            </th>
+                            <th class="priority">
+                                <span class="u-hide-mobile">Drawn</span>
+                                <span class="u-show-mobile">D</span>
+                            </th>
+                            <th class="priority">
+                                <span class="u-hide-mobile">Lost</span>
+                                <span class="u-show-mobile">L</span>
+                            </th>
+                            <th>GF</th>
+                            <th>GA</th>
+                            <th>GD</th>
+                            <th v-on:click="$root.sortTable('Projected', 'desc')" class="u-clickable th-projected">
+                                Projected
+                                <i class="fa fa-sort-desc"></i>
+                            </th>
+                            <th v-on:click="$root.sortTable('Position', 'asc')" class="priority u-clickable th-position">
+                                <span class="u-hide-mobile">Points</span>
+                                <span class="u-show-mobile">Pts</span>
+                                <i class="fa fa-sort-asc"></i>
+                            </th>
+                            <th class="cell__form">Form</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template v-for="(player, index) in $root.players">
+                            <tr class="player-row" v-bind:class="{ 'active': player.ShowForm}">
+                                <td class="cell__trigger priority">
+                                    <a v-on:click="player.ShowForm = !player.ShowForm; $root.buildGraph($root.graphSelector(player.Position), player)">
+                                        <i class="fa fa-angle-down"></i>
+                                    </a>
+                                </td>
+                                <td class="priority">{{ player.Position }}</td>
+                                <td class="u-left-align priority cell__playerInfo">
+                                    <router-link v-bind:to="$root.playerLink(player.ShortName)">
+                                        <img v-bind:src="$root.playerEmoji(player.PlayerFace)" class="emoji" :alt="player.PlayerName" :title="player.PlayerName" />
+                                        <img v-if="player.TeamBadge" v-bind:src="$root.playerBadge(player.TeamBadge)" class="badge" :alt="player.TeamName" :title="player.TeamName" />
+                                        <span class="teamName">&nbsp;{{ player.PlayerName }}</span>
+                                    </router-link>
+                                </td>
+                                <td class="priority">{{ player.GamesPlayed }}</td>
+                                <td class="priority">{{ player.GamesWon }}</td>
+                                <td class="priority">{{ player.GamesDrawn }}</td>
+                                <td class="priority">{{ player.GamesLost }}</td>
+                                <td>{{ player.GoalsFor }}</td>
+                                <td>{{ player.GoalsAgainst }}</td>
+                                <td>{{ player.GoalDifference }}</td>
+                                <td>{{ $root.projectedPoints(player) }}</td>
+                                <td class="u-bold priority">{{ player.Points }}</td>
+                                <td class="cell__form">
+                                    <i class="form" v-for="result in $root.sortResults(player.PositionHistory, 3)" v-bind:class="{'u-result__win': result.IsWin, 'u-result__draw': result.IsDraw, 'u-result__loss': result.IsLoss}"></i>
+
+                                </td>
+                            </tr>
+                            <tr class="expandable u-left-align" v-bind:class="{'expanded': player.ShowForm}">
+                                <td colspan="13" class="priority">
+                                    <div class="player-info-wrapper">
+                                        <h4 class="heading-panel">Recent results</h4>
+                                        <div class="results">
+                                            <div class="panel match u-center-align" v-for="result in $root.sortResults(player.PositionHistory, 3)" v-bind:class="{'u-result__win': result.IsWin, 'u-result__draw': result.IsDraw, 'u-result__loss': result.IsLoss}">
+                                                <img v-bind:src="$root.playerEmoji(result.HomePlayerFace)" class="emoji" :alt="result.HomePlayerName" :title="result.HomePlayerName" />
+                                                <span class="score">{{ result.HomeGoals }}</span>
+                                                <span class="hyphen">-</span>
+                                                <span class="score">{{ result.AwayGoals }}</span>
+                                                <img v-bind:src="$root.playerEmoji(result.AwayPlayerFace)" class="emoji" :alt="result.AwayPlayerName" :title="result.AwayPlayerName" />
+                                                <p class=match__date>{{ $root.formatDate(result.ResultDate, 'Do MMMM YYYY') }}</p>
+                                            </div>
+                                        </div>
+                                        <h4 class="heading-panel posHist">Position History</h4>
+                                        <div class="position-history posHist">
+                                            <canvas :id="$root.graphID(player.Position)" width="400" height="100"></canvas>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </script>
+
+        <script type="x-template" id="player">
+            <div class="wrapper">
+                <router-link to="/" class="back-button">
+                    <i class="fa fa-arrow-left"></i> Back
+                </router-link>
+                <article class="player">
+                    <h1 class="heading-page">
+                        <img v-bind:src="$root.playerEmoji($root.selectedPlayer.ShortName)" class="emoji" :alt="$root.selectedPlayer.PlayerName" :title="$root.selectedPlayer.PlayerName" />
+                        <span class="heading-info">
+                            {{ $root.selectedPlayer.PlayerName }}
+                            <span class="current-team">
+                                <img v-if="$root.selectedPlayer.TeamBadge" v-bind:src="$root.playerBadge($root.selectedPlayer.TeamBadge)" class="badge" :alt="$root.selectedPlayer.TeamName" :title="$root.selectedPlayer.TeamName" />
+                                {{ $root.selectedPlayer.TeamName }}
+                            </span>
+                        </span>
+                    </h1>
+                    <h2 class="heading-panel">Career highlights</h2>
+                    <table class="career-highlights u-center-align">
+                        <thead>
+                            <tr>
+                                <th>Seasons</th>
+                                <th>Games</th>
+                                <th>Wins</th>
+                                <th>Losses</th>
+                                <th>Goals</th>
+                                <th>Longest streak</th>
+                                <th>Titles won</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>--</td>
+                                <td>{{ $root.selectedPlayer.GamesPlayed }}</td>
+                                <td>{{ $root.selectedPlayer.GamesWon }}</td>
+                                <td>{{ $root.selectedPlayer.GamesLost }}</td>
+                                <td>{{ $root.selectedPlayer.GoalsFor }}</td>
+                                <td>--</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h2 class="heading-panel u-hide-mobile">Current season position history</h2>
+                    <div class="section u-hide-mobile">
+                        <div class="position-history">
+                            <canvas :id="$root.playerGraphID($root.selectedPlayer.Position)" width="400" height="100"></canvas>
+                        </div>
+                    </div>
+
+                    <h2 class="heading-panel">This season</h2>
+                    <div class="results results--full section">
+                        <div class="panel match u-center-align" v-for="result in $root.sortResults($root.selectedPlayer.PositionHistory)" v-bind:class="{'u-result__win': result.IsWin, 'u-result__draw': result.IsDraw, 'u-result__loss': result.IsLoss}">
+                            <span class="team-info team-info--home">
+                                <span class="team-info__name">{{ result.HomePlayerName }}</span>
+                                <span class="team-info__club">{{ result.HomePlayerTeamName }}</span>
+                            </span>
+                            <span class="emoji-wrap">
+                                <img v-bind:src="$root.playerEmoji(result.HomePlayerFace)" class="emoji" :alt="result.HomePlayerName" :title="result.HomePlayerName" />
+                            </span>
+                            <span class="score">{{ result.HomeGoals }}</span>
+                            <span class="hyphen">-</span>
+                            <span class="score">{{ result.AwayGoals }}</span>
+                            <span class="emoji-wrap">
+                                <img v-bind:src="$root.playerEmoji(result.AwayPlayerFace)" class="emoji" :alt="result.AwayPlayerName" :title="result.AwayPlayerName" />
+                            </span>
+                            <span class="team-info team-info--away">
+                            <span class="team-info__name">{{ result.AwayPlayerName }}</span>
+                            <span class="team-info__club">{{ result.AwayPlayerTeamName }}</span>
+                            </span>
+                            <p class=match__date>{{ $root.formatDate(result.ResultDate, 'Do MMMM YYYY') }}</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </script>
+
+        <div id="app">
+            <header class="header">
+                <div class="wrapper">
+                    <h1 class="header__title">
+                        <router-link to="/">Redweb FIFA League</router-link>
+                    </h1>
+                    <ul class="leagueTabs u-no-list" v-show="showTabs">
+                        <li v-bind:class="{ 'selected' : selectedLeague == 'p'}">
+                            <a href="#" v-on:click="switchLeagues('p')">Premiership</a>
+                        </li>
+                        <li v-bind:class="{ 'selected' : selectedLeague == 'c'}">
+                            <a href="#" v-on:click="switchLeagues('c')">Championship</a>
+                        </li>
+                    </ul>
+                </div>
+            </header>
+
+            <router-view></router-view>
+        </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+        <script src="js/libs/moment.js"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+        <script src="https://cdn.jsdelivr.net/lodash/4.17.4/lodash.min.js"></script>
+
+        <script src="https://unpkg.com/vue/dist/vue.js"></script>
+        <script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+
+        <script src="js/app.js"></script>
+    </body>
+</html>

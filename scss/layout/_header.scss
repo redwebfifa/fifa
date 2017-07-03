@@ -1,0 +1,54 @@
+/******************************************
+HEADER
+******************************************/
+.header {
+    width: 100%;
+    margin-bottom: rem-calc(30);
+    padding: rem-calc(30 0 0);
+    background-color: $primary-colour;
+
+    &__title {
+        position: relative;
+        color: $white;
+        font-size: rem-calc(30);
+
+        a {
+            color: $white;
+
+            &:hover {
+                color: $black;
+            }
+        }
+    }
+}
+.leagueTabs {
+    overflow: hidden;
+
+    li {
+        float: left;
+        margin: rem-calc(0 5 0 0);
+    }
+    a {
+        display: block;
+        padding: rem-calc(14 18);
+        background-color: rgba(255,255,255,.8);
+        border-radius: rem-calc(3 3 0 0);
+        font-size: rem-calc(12);
+        color: $body-text;
+    }
+    li.selected a {
+        background-color: $white;
+    }
+}
+
+@media only screen and (max-width: 600px) {
+    .header {
+        padding-top: rem-calc(20);
+        margin-bottom: rem-calc(20);
+
+        &__title {
+            margin-bottom: rem-calc(20);
+            font-size: rem-calc(24);
+        }
+    }
+}
