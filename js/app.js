@@ -249,7 +249,7 @@ const app = new Vue({
                                 {
                                     scaleLabel: {
                                         display: true,
-                                        labelString: "Position"
+                                        labelString: "Games Played"
                                     },
                                     gridLines: {
                                         display: false,
@@ -264,7 +264,7 @@ const app = new Vue({
                                 {
                                     scaleLabel: {
                                         display: true,
-                                        labelString: "Games played"
+                                        labelString: "Position"
                                     },
                                     gridLines: {
                                         drawBorder: false
