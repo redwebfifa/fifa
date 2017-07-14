@@ -66,8 +66,8 @@ const app = new Vue({
         leagues: [],
         selectedLeague: "p",
         selectedPlayer: "",
-        pID: "641",
-        cID: "643",
+        pID: "673",
+        cID: "674",
         players: [],
         p: [],
         c: [],
@@ -154,7 +154,11 @@ const app = new Vue({
         projectedPoints: function(player) {
             var projected = (player.Points / player.GamesPlayed) * 18;
             Vue.set(player, 'Projected', projected);
-            return Math.round(projected);
+            if (projected) {
+                return Math.round(projected);
+            } else {
+                return 0;
+            }
         },
         limitResults: function(arr, limit) {
             if (arr) {
@@ -177,6 +181,7 @@ const app = new Vue({
             this.selectedLeague = val;
 
             this.buildGraphs();
+            this.sortTable('Position', 'asc');
         },
         sortTable: function(prop, order) {
             this.players = _.orderBy(this.players, prop, order);
