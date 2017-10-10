@@ -66,8 +66,8 @@ const app = new Vue({
         leagues: [],
         selectedLeague: "p",
         selectedPlayer: "",
-        pID: "673",
-        cID: "674",
+        pID: "706",
+        cID: "",
         players: [],
         p: [],
         c: [],
@@ -92,8 +92,8 @@ const app = new Vue({
         },
         setLeagues: function(data) {
             this.leagues = data;
-            this.getPlayers("p", this.pID)
-            this.getPlayers("c", this.cID)
+            this.getPlayers("p", this.pID);
+            //this.getPlayers("c", this.cID);
         },
         getPlayers: function(league, id) {
             this.getApiData("leagues/" + id, this.setPlayers, league);
