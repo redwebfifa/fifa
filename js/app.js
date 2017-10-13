@@ -277,7 +277,7 @@ const app = new Vue({
                                     ticks: {
                                         padding: 20,
                                         min: 1,
-                                        max: 10,
+                                        max: 18,
                                         beginAtZero: true,
                                         reverse: true,
                                     },
