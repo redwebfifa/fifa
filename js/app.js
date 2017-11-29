@@ -152,7 +152,8 @@ const app = new Vue({
             }
         },
         projectedPoints: function(player) {
-            var projected = (player.Points / player.GamesPlayed) * 18;
+            var totalGames = (this.players.length - 1) * 2;
+            var projected = (player.Points / player.GamesPlayed) * totalGames;
             Vue.set(player, 'Projected', projected);
             if (projected) {
                 return Math.round(projected);
